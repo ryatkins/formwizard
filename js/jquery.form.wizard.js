@@ -234,6 +234,23 @@
 			return false;
 		},
 
+		_submitAjax : function(){
+
+			if(!this.options.formSubmitDisabledFields) {
+				for(var i = 0; i < this.activatedSteps.length; i++){
+				 	this.steps.filter("#" + this.activatedSteps[i]).find(":input").not(".wizard-ignore").removeAttr("disabled");
+				}
+			} else {
+				$('input').each(function(index,data) {
+				   $(this).removeAttr("disabled");
+				});
+			}
+
+			this._disableNavigation();
+
+			this.element.ajaxSubmit(this.options.formOptions);
+			return true;
+		},
 		_updateHistory : function(step){
 			var state = {};
 			state["_" + $(this.element).attr('id')] = step;
@@ -414,6 +431,10 @@
 
 		back : function(){
 			this._back();
+		},
+
+		submitAjax : function(){
+			this._submitAjax();
 		},
 
 		destroy: function() {
